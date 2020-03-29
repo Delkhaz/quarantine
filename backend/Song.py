@@ -1,5 +1,3 @@
-import time
-
 class Song():
     def __init__(self):
         self.artist = None
@@ -9,5 +7,3 @@ class Song():
         self.album_art = None
         self.time_added = None
         self.song_info = None
-
-
