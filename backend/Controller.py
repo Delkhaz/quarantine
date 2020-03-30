@@ -49,8 +49,15 @@ class Controller():
                 self.queue.append(s)
 
             if str(self.queue[0]['song_info']) != prev:
-                print("order has been changed: {} is now next".format(self.queue[0]['song_info']))
-
+                print("order changed: {} is next".format(self.queue[0]['song_info']))
+        
+        #print('\n\n')
+        print('self.queue')
+        '''
+        for i in self.queue:
+            for k,v in i.items():
+                print(v)
+        '''
             
     def play_next(self):
         pass
@@ -74,10 +81,10 @@ def main():
 
     song_controller = Controller()
     for songs in song_list:
-        song_info = Parse(songs)
-        song_controller.add(vars(song_info))
+        song = Parse(songs)
+        song_controller.add(vars(song))
 
-main()
+#main()
 
 
 
