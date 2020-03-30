@@ -11,21 +11,26 @@ class Controller():
         return
 
     def add(self, song):
+        print(song)
+        print('song')
+        print('\n\n\n')
         if self.queue:
-            prev = str(self.queue[0]['song_info'])
+            prev = str(self.queue[0]['song_id'])
         else:
             prev = 'None'
         
-        #song data is artist + song name
-        song_data = song['song_info']
-        print("Adding {} to the queue".format(song_data))
+        #for now each song is identifie by the artist + song name
+        #example stromae_tous-les-mêmes
+        song_id = song['song_id']
+        
+        print("Adding {} to the queue".format(song_id))
 
-        if song_data not in self.count:
-            self.count[song_data] = 0
-        self.count[song_data] += 1
+        if song_id not in self.count:
+            self.count[song_id] = 0
+        self.count[song_id] += 1
 
-        if song_data not in self.songs_db:
-            self.songs_db[song_data] = song
+        if song_id not in self.songs_db:
+            self.songs_db[song_id] = song
 
         while self.queue:
             self.queue.pop()
@@ -38,9 +43,9 @@ class Controller():
 
         while counts_list:
             temp = []
-            for artist_song, song_data in self.songs_db.items():
-                if self.count[artist_song] == counts_list[0]:
-                    temp.append(song_data)
+            for s_id, song_map in self.songs_db.items():
+                if self.count[s_id] == counts_list[0]:
+                    temp.append(song_map)
 
             counts_list.pop(0)
             temp.sort(key=lambda l: l['time_added'])
@@ -48,8 +53,8 @@ class Controller():
             for s in temp:
                 self.queue.append(s)
 
-            if str(self.queue[0]['song_info']) != prev:
-                print("order changed: {} is next".format(self.queue[0]['song_info']))
+            if str(self.queue[0]['song_id']) != prev:
+                print("order changed: {} is next".format(self.queue[0]['song_id']))
         
         #print('\n\n')
         print('self.queue')
@@ -60,29 +65,34 @@ class Controller():
         '''
             
     def play_next(self):
-        pass
+        if not self.queue:
+            return None
+        next_song = self.queue.pop(0)
+        del self.songs_db[next_song['song_id']]
+        del self.count[next_song['song_id']]
+        return next_song['song_id']
 
-    def play_current(self):
-        pass
+    def play(self):
+        return self.queue[0]['song_id'] if not self.queue else None
 
-    def get_next(self):
-        pass
 
-    def reset(self):
-        pass
 
 
 
 def main():
     song_list = []
     song_list.append('https://open.spotify.com/track/1GC1MIaRMW3kfVK9VyD5Ii?si=W9SEsuTcTH2zmgabE_8ajA')
+    song_list.append('https://open.spotify.com/track/0BSPhsCKfwENstErymcD80?si=lFu4ibWpRRi6a8xCf3OAvw')
     song_list.append('https://open.spotify.com/track/1QFw2xxyQtgKjlrMCEqsNj?si=PC7TJMbUS7Sy-jJycXOueg')
     song_list.append('https://open.spotify.com/track/1GC1MIaRMW3kfVK9VyD5Ii?si=W9SEsuTcTH2zmgabE_8ajA')
 
     song_controller = Controller()
     for songs in song_list:
         song = Parse(songs)
+        
         song_controller.add(vars(song))
+
+    
 
 #main()
 

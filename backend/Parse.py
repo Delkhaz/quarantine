@@ -7,6 +7,7 @@ import time
 import bs4
 import requests
 import json
+import os
 
 page_cache = defaultdict()
 
@@ -63,9 +64,16 @@ class Parse(Song):
         self.album = spotify_data['name']
         self.album_art = spotify_data["images"][0]['url']
         self.year = spotify_data["release_date"].partition("-")[0]
-        self.song_info = "{}_{}".format(self.artist.replace(" ", "-"), self.song.replace(" ", "-")).lower()
+        self.song_id = "{}_{}".format(self.artist.replace(" ", "-"), self.song.replace(" ", "-")).lower()
         self.time_added = int(time.time())
         #self.song_info = (self.artist.replace(" ", "-")+ '_' + self.song.replace(" ", "-")).lower()
+
+        if self.download:
+            self.download_song()
+
+    def download_song(self):
+        if not os.path.exists("songs/{}.mp3".format(self.song_id)):
+            os.system('youtube-dl --extract-audio --audio-format mp3 -o "songs/{}.%(ext)s" "ytsearch:{} {} lyrics"'.format(self.song_id, self.artist, self.song))
 
     # going to work on spotify only for rn
     def parse_youtube(self):

@@ -9,11 +9,12 @@ import time
  
 
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='../frontend')
 
 #init list testing
 song_list = []
 song_list.append('https://open.spotify.com/track/1GC1MIaRMW3kfVK9VyD5Ii?si=W9SEsuTcTH2zmgabE_8ajA')
+song_list.append('https://open.spotify.com/track/0BSPhsCKfwENstErymcD80?si=lFu4ibWpRRi6a8xCf3OAvw')
 song_list.append('https://open.spotify.com/track/1QFw2xxyQtgKjlrMCEqsNj?si=PC7TJMbUS7Sy-jJycXOueg')
 song_list.append('https://open.spotify.com/track/1GC1MIaRMW3kfVK9VyD5Ii?si=W9SEsuTcTH2zmgabE_8ajA')
 
@@ -21,7 +22,6 @@ song_controller = Controller()
 for songs in song_list:
     song = Parse(songs)
     song_controller.add(vars(song))
-
 
 
 @app.route('/post_song', methods = ["POST"])
@@ -39,6 +39,18 @@ def get_curr_album_art():
         return ''
     return song_controller.queue[0]['album_art']
 
+@app.route('/play', methods=["GET"])
+def playy():
+    return send_file("songs/{}.mp3".format(song_controller.play()))
+
+@app.route('/play_next', methods=["GET"])
+def next_song():
+    song_controller.play_next()
+    return send_file("songs/{}.mp3".format(song_controller.play()))
+
+@app.route('/player', methods=['GET'])
+def player():
+    return render_template('home.html')
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0', port=5000)
