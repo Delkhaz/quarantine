@@ -58,15 +58,15 @@ class Parse(Song):
     def parse_spotify(self):
         page = cache(self.url)
                 
-        spotifyDoc = to_json(str(page), "Spotify.Entity = ", '"};')
+        spotify_data = to_json(str(page), "Spotify.Entity = ", '"};')
 
-        if 'album' in spotifyDoc:
-            spotifyDoc = spotifyDoc['album']
-        self.artist = spotifyDoc["artists"][0]["name"]
+        if 'album' in spotify_data:
+            spotify_data = spotify_data['album']
+        self.artist = spotify_data["artists"][0]["name"]
         self.song = page.title.string.partition(", a ")[0]
-        self.album = spotifyDoc["name"]
-        self.album_art = spotifyDoc["images"][0]['url']
-        self.year = spotifyDoc["release_date"].partition("-")[0]
+        self.album = spotify_data["name"]
+        self.album_art = spotify_data["images"][0]['url']
+        self.year = spotify_data["release_date"].partition("-")[0]
         self.song_info = "{}_{}".format(self.artist.replace(" ", "-"), self.song.replace(" ", "-")).lower()
 
         self.download()
