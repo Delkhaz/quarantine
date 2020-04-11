@@ -58,10 +58,6 @@ def play_next_song():
 	return send_file("songs/{}.mp3".format(song_controller.play_current()))
 
 
-
-def gen_random_time():
-	return "{}:{}".format(random.randint(2,5), random.randint(10, 59))
-
 @app.route("/get_song_order", methods=["GET"])
 def get_song_order():
 
@@ -84,7 +80,7 @@ def get_song_order():
 				</div>
 			  </li>
 			  <br>
-		'''.format(song['song'], song['artist'], song['album'], gen_random_time())
+		'''.format(song['song'], song['artist'], song['album'])
 	return rv
 
 
