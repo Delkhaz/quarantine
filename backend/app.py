@@ -64,22 +64,7 @@ def get_song_order():
 	rv = ""
 	for song in song_controller.queue[1:]:
 		rv += '''
-		<li href="#">
-
-				<div class="song-detail">
-				  <div class="row">
-					<div class="col">
-					  <h3>{}</h3>
-					  <p><b>{}</b><br>{}</p>
-					</div>
-					<div class="col">
-					  <div class="row mx-auto float-right float-right">
-						<font size ="5"> {} </font>
-					</div>
-				  </div>
-				</div>
-			  </li>
-			  <br>
+		#todo
 		'''.format(song['song'], song['artist'], song['album'])
 	return rv
 
@@ -91,12 +76,8 @@ def get_current_song_info():
 		return ""
 	
 	current_song = song_controller.queue[0]
-	rv = """<center><div class="">
-			  <h1>{}</h2>
-			</div>
-			<div class="">
-			  <h3>{} | {}</h3>
-			</div>
+	rv = """
+		#todo
 			""".format(current_song['song'], current_song['artist'], current_song['album'])
 	return rv
 
